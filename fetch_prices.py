@@ -362,22 +362,38 @@ def _parse_time(s: str) -> datetime:
     return datetime.fromisoformat(s.replace("Z", "+00:00"))
 
 
-def current_slot(points: list[dict], now: datetime | None = None) -> dict | None:
-    """Preis-Slot, in dem `now` liegt (Slotlänge aus dem Punktabstand, sonst 15 min)."""
-    now = now or datetime.now(_tz())
+def _slots(points: list[dict]) -> list[tuple[dict, datetime, datetime]]:
+    """(Punkt, Start, Ende) je Preispunkt; Ende = nächster Punkt, beim letzten
+    Punkt der vorige Abstand (sonst 15 min)."""
     try:
         ts = [_parse_time(p["time"]) for p in points]
     except (KeyError, TypeError, ValueError):
-        return None
+        return []
+    out = []
     for i, (p, t) in enumerate(zip(points, ts)):
         if i + 1 < len(ts):
             end = ts[i + 1]
         else:
             end = t + ((t - ts[i - 1]) if i > 0 else timedelta(minutes=15))
-        if t <= now < end:
+        out.append((p, t, end))
+    return out
+
+
+def current_slot(points: list[dict], now: datetime | None = None) -> dict | None:
+    """Preis-Slot, in dem `now` liegt (Slotlänge aus dem Punktabstand, sonst 15 min)."""
+    now = now or datetime.now(_tz())
+    for p, start, end in _slots(points):
+        if start <= now < end:
             return {"time": p["time"], "valueInCents": p["valueInCents"],
-                    "durationMinutes": int((end - t).total_seconds() // 60)}
+                    "durationMinutes": int((end - start).total_seconds() // 60)}
     return None
+
+
+def evcc_rates(points: list[dict]) -> list[dict]:
+    """Preise im Format des evcc-`custom`-Tarifs: [{start, end, value}], value in €/kWh."""
+    return [{"start": start.isoformat(), "end": end.isoformat(),
+             "value": round(p["valueInCents"] / 100, 6)}
+            for p, start, end in _slots(points)]
 
 
 def fetch_prices(email: str, password: str,
@@ -467,6 +483,8 @@ def fetch_prices(email: str, password: str,
         },
         "currentPrice": cur_val,
         "currentSlot": current_slot(today["points"] + tomorrow["points"]),
+        # evcc-Format (custom-Tarif, jq: .rates) – Werte in €/kWh
+        "rates": evcc_rates(today["points"] + tomorrow["points"]),
         "today": today,
         "tomorrow": tomorrow,
     }

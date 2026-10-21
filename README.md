@@ -56,6 +56,7 @@ daten["tomorrow"]["points"]     # [{"time": "2026-11-02T00:00:00+01:00", "valueI
 | `currentSlot` | Preis-Slot, der *jetzt* gilt – lokal aus den Punkten berechnet, oder `null` |
 | `currentPrice` | „Aktueller Preis“ laut API (geglättete Kurve; vermutlich Stundenmittel), oder `null` |
 | `today` / `tomorrow` | `points` (Liste aus `time` + `valueInCents`), `averageInCents`, `minRange`/`maxRange` |
+| `rates` | alle Punkte von heute und morgen im Format des [evcc](https://evcc.io)-`custom`-Tarifs: `[{start, end, value}]`, `value` in **€/kWh** |
 | `contract` | `id`, `name`, `address` (nur PLZ + Ort), `startDate`, `details` (Status, Laufzeiten, Abschlag …) |
 
 Preise in **ct/kWh**. Felder, die die API nicht liefert, sind `null`. Neue

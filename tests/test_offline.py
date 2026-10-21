@@ -279,6 +279,29 @@ class CurrentSlot(unittest.TestCase):
         self.assertEqual(fp.current_slot(pts, self.at(1, 59))["durationMinutes"], 60)
 
 
+class EvccRates(unittest.TestCase):
+    def test_format_wie_evcc_custom_tarif(self):
+        pts = [{"time": "2026-11-04T23:00:00Z", "valueInCents": 25.335},
+               {"time": "2026-11-04T23:15:00Z", "valueInCents": -1.5}]
+        r = fp.evcc_rates(pts)
+        self.assertEqual([set(x) for x in r], [{"start", "end", "value"}] * 2)
+        self.assertEqual(r[0]["value"], 0.25335)
+        self.assertEqual(r[1]["value"], -0.015)
+        # lückenlos: Ende = Start des nächsten Slots; letzter Slot mit gleichem Abstand
+        self.assertEqual(datetime.fromisoformat(r[0]["end"]), datetime.fromisoformat(r[1]["start"]))
+        self.assertEqual(datetime.fromisoformat(r[1]["end"]) - datetime.fromisoformat(r[1]["start"]),
+                         datetime.fromisoformat(r[0]["end"]) - datetime.fromisoformat(r[0]["start"]))
+
+    def test_rfc3339_mit_offset(self):
+        import re
+        for x in fp.evcc_rates([{"time": "2026-11-05T00:00:00+01:00", "valueInCents": 20}]):
+            for k in ("start", "end"):
+                self.assertRegex(x[k], r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d([+-]\d\d:\d\d)$")
+
+    def test_leer(self):
+        self.assertEqual(fp.evcc_rates([]), [])
+
+
 class Cli(unittest.TestCase):
     def run_main(self, argv, env):
         out, err = io.StringIO(), io.StringIO()

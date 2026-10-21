@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 chloepriceless – https://github.com/chloepriceless/Lichtblick-Lokal-Preis
 """Offline-Tests für lichtblick-preise (kein Netz, LichtBlick-API gemockt).
 
 Aufruf im Projektordner:  python3 -m unittest discover -s tests -v

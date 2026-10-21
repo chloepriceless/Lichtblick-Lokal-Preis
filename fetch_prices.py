@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 chloepriceless – https://github.com/chloepriceless/Lichtblick-Lokal-Preis
 """LichtBlick „ÖkoStrom Dynamic“ – Preisabruf.
 
 Holt Strompreis-Kurven (heute + morgen), den aktuellen Preispunkt und eine

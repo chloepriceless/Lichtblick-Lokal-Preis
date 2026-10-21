@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 chloepriceless – https://github.com/chloepriceless/Lichtblick-Lokal-Preis
 // Browser-Tests für index.html (Playwright). /api/prices wird im Browser abgefangen –
 // es geht nichts an LichtBlick. Startet serve.py selbst auf einem freien Port.
 //

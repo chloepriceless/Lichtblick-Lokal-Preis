@@ -1,0 +1,23 @@
+# Zugangsdaten / Tokens – niemals committen
+.env
+.env.*
+!.env.example
+lichtblick.env
+*.token
+token-*.json
+token.json
+# Token-Cache, falls LB_TOKEN_CACHE_DIR ins Repo zeigt
+.lichtblick/
+
+# Laufzeit-Ausgaben
+data/prices.json
+
+# Python / OS
+__pycache__/
+*.pyc
+.DS_Store
+
+# Tests
+node_modules/
+package-lock.json
+test-results/

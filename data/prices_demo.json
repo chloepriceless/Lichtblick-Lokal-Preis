@@ -1,0 +1,813 @@
+{
+  "schemaVersion": 1,
+  "fetchedAt": "2026-10-21T22:51:35+0200",
+  "timezone": "Europe/Berlin",
+  "contract": {
+    "id": 12345678,
+    "name": "ÖkoStrom Dynamic",
+    "address": {
+      "city": "Beispielstadt",
+      "postCode": "12345"
+    },
+    "startDate": "2026-10-01"
+  },
+  "currentPrice": 22.5,
+  "today": {
+    "points": [
+      {
+        "time": "2026-10-20T22:00:00Z",
+        "valueInCents": 25.335
+      },
+      {
+        "time": "2026-10-20T22:15:00Z",
+        "valueInCents": 23.514
+      },
+      {
+        "time": "2026-10-20T22:30:00Z",
+        "valueInCents": 23.756
+      },
+      {
+        "time": "2026-10-20T22:45:00Z",
+        "valueInCents": 23.264
+      },
+      {
+        "time": "2026-10-20T23:00:00Z",
+        "valueInCents": 24.12
+      },
+      {
+        "time": "2026-10-20T23:15:00Z",
+        "valueInCents": 23.595
+      },
+      {
+        "time": "2026-10-20T23:30:00Z",
+        "valueInCents": 23.725
+      },
+      {
+        "time": "2026-10-20T23:45:00Z",
+        "valueInCents": 21.402
+      },
+      {
+        "time": "2026-10-21T00:00:00Z",
+        "valueInCents": 21.814
+      },
+      {
+        "time": "2026-10-21T00:15:00Z",
+        "valueInCents": 20.481
+      },
+      {
+        "time": "2026-10-21T00:30:00Z",
+        "valueInCents": 20.546
+      },
+      {
+        "time": "2026-10-21T00:45:00Z",
+        "valueInCents": 20.851
+      },
+      {
+        "time": "2026-10-21T01:00:00Z",
+        "valueInCents": 19.328
+      },
+      {
+        "time": "2026-10-21T01:15:00Z",
+        "valueInCents": 19.381
+      },
+      {
+        "time": "2026-10-21T01:30:00Z",
+        "valueInCents": 20.121
+      },
+      {
+        "time": "2026-10-21T01:45:00Z",
+        "valueInCents": 19.553
+      },
+      {
+        "time": "2026-10-21T02:00:00Z",
+        "valueInCents": 18.494
+      },
+      {
+        "time": "2026-10-21T02:15:00Z",
+        "valueInCents": 19.148
+      },
+      {
+        "time": "2026-10-21T02:30:00Z",
+        "valueInCents": 19.511
+      },
+      {
+        "time": "2026-10-21T02:45:00Z",
+        "valueInCents": 17.501
+      },
+      {
+        "time": "2026-10-21T03:00:00Z",
+        "valueInCents": 19.44
+      },
+      {
+        "time": "2026-10-21T03:15:00Z",
+        "valueInCents": 19.323
+      },
+      {
+        "time": "2026-10-21T03:30:00Z",
+        "valueInCents": 18.743
+      },
+      {
+        "time": "2026-10-21T03:45:00Z",
+        "valueInCents": 18.723
+      },
+      {
+        "time": "2026-10-21T04:00:00Z",
+        "valueInCents": 21.212
+      },
+      {
+        "time": "2026-10-21T04:15:00Z",
+        "valueInCents": 20.412
+      },
+      {
+        "time": "2026-10-21T04:30:00Z",
+        "valueInCents": 20.607
+      },
+      {
+        "time": "2026-10-21T04:45:00Z",
+        "valueInCents": 21.44
+      },
+      {
+        "time": "2026-10-21T05:00:00Z",
+        "valueInCents": 24.048
+      },
+      {
+        "time": "2026-10-21T05:15:00Z",
+        "valueInCents": 24.184
+      },
+      {
+        "time": "2026-10-21T05:30:00Z",
+        "valueInCents": 25.243
+      },
+      {
+        "time": "2026-10-21T05:45:00Z",
+        "valueInCents": 25.425
+      },
+      {
+        "time": "2026-10-21T06:00:00Z",
+        "valueInCents": 25.087
+      },
+      {
+        "time": "2026-10-21T06:15:00Z",
+        "valueInCents": 26.009
+      },
+      {
+        "time": "2026-10-21T06:30:00Z",
+        "valueInCents": 24.215
+      },
+      {
+        "time": "2026-10-21T06:45:00Z",
+        "valueInCents": 24.06
+      },
+      {
+        "time": "2026-10-21T07:00:00Z",
+        "valueInCents": 24.004
+      },
+      {
+        "time": "2026-10-21T07:15:00Z",
+        "valueInCents": 22.693
+      },
+      {
+        "time": "2026-10-21T07:30:00Z",
+        "valueInCents": 22.453
+      },
+      {
+        "time": "2026-10-21T07:45:00Z",
+        "valueInCents": 20.99
+      },
+      {
+        "time": "2026-10-21T08:00:00Z",
+        "valueInCents": 20.606
+      },
+      {
+        "time": "2026-10-21T08:15:00Z",
+        "valueInCents": 18.46
+      },
+      {
+        "time": "2026-10-21T08:30:00Z",
+        "valueInCents": 18.473
+      },
+      {
+        "time": "2026-10-21T08:45:00Z",
+        "valueInCents": 18.342
+      },
+      {
+        "time": "2026-10-21T09:00:00Z",
+        "valueInCents": 17.697
+      },
+      {
+        "time": "2026-10-21T09:15:00Z",
+        "valueInCents": 18.044
+      },
+      {
+        "time": "2026-10-21T09:30:00Z",
+        "valueInCents": 17.811
+      },
+      {
+        "time": "2026-10-21T09:45:00Z",
+        "valueInCents": 18.401
+      },
+      {
+        "time": "2026-10-21T10:00:00Z",
+        "valueInCents": 19.49
+      },
+      {
+        "time": "2026-10-21T10:15:00Z",
+        "valueInCents": 19.12
+      },
+      {
+        "time": "2026-10-21T10:30:00Z",
+        "valueInCents": 19.449
+      },
+      {
+        "time": "2026-10-21T10:45:00Z",
+        "valueInCents": 19.406
+      },
+      {
+        "time": "2026-10-21T11:00:00Z",
+        "valueInCents": 19.905
+      },
+      {
+        "time": "2026-10-21T11:15:00Z",
+        "valueInCents": 21.887
+      },
+      {
+        "time": "2026-10-21T11:30:00Z",
+        "valueInCents": 21.577
+      },
+      {
+        "time": "2026-10-21T11:45:00Z",
+        "valueInCents": 21.873
+      },
+      {
+        "time": "2026-10-21T12:00:00Z",
+        "valueInCents": 21.214
+      },
+      {
+        "time": "2026-10-21T12:15:00Z",
+        "valueInCents": 22.948
+      },
+      {
+        "time": "2026-10-21T12:30:00Z",
+        "valueInCents": 21.986
+      },
+      {
+        "time": "2026-10-21T12:45:00Z",
+        "valueInCents": 22.903
+      },
+      {
+        "time": "2026-10-21T13:00:00Z",
+        "valueInCents": 24.771
+      },
+      {
+        "time": "2026-10-21T13:15:00Z",
+        "valueInCents": 24.348
+      },
+      {
+        "time": "2026-10-21T13:30:00Z",
+        "valueInCents": 24.584
+      },
+      {
+        "time": "2026-10-21T13:45:00Z",
+        "valueInCents": 25.363
+      },
+      {
+        "time": "2026-10-21T14:00:00Z",
+        "valueInCents": 26.271
+      },
+      {
+        "time": "2026-10-21T14:15:00Z",
+        "valueInCents": 26.719
+      },
+      {
+        "time": "2026-10-21T14:30:00Z",
+        "valueInCents": 26.123
+      },
+      {
+        "time": "2026-10-21T14:45:00Z",
+        "valueInCents": 26.498
+      },
+      {
+        "time": "2026-10-21T15:00:00Z",
+        "valueInCents": 28.172
+      },
+      {
+        "time": "2026-10-21T15:15:00Z",
+        "valueInCents": 29.196
+      },
+      {
+        "time": "2026-10-21T15:30:00Z",
+        "valueInCents": 30.318
+      },
+      {
+        "time": "2026-10-21T15:45:00Z",
+        "valueInCents": 33.398
+      },
+      {
+        "time": "2026-10-21T16:00:00Z",
+        "valueInCents": 34.548
+      },
+      {
+        "time": "2026-10-21T16:15:00Z",
+        "valueInCents": 34.398
+      },
+      {
+        "time": "2026-10-21T16:30:00Z",
+        "valueInCents": 36.197
+      },
+      {
+        "time": "2026-10-21T16:45:00Z",
+        "valueInCents": 36.246
+      },
+      {
+        "time": "2026-10-21T17:00:00Z",
+        "valueInCents": 37.79
+      },
+      {
+        "time": "2026-10-21T17:15:00Z",
+        "valueInCents": 36.6
+      },
+      {
+        "time": "2026-10-21T17:30:00Z",
+        "valueInCents": 35.665
+      },
+      {
+        "time": "2026-10-21T17:45:00Z",
+        "valueInCents": 34.84
+      },
+      {
+        "time": "2026-10-21T18:00:00Z",
+        "valueInCents": 34.596
+      },
+      {
+        "time": "2026-10-21T18:15:00Z",
+        "valueInCents": 32.764
+      },
+      {
+        "time": "2026-10-21T18:30:00Z",
+        "valueInCents": 32.403
+      },
+      {
+        "time": "2026-10-21T18:45:00Z",
+        "valueInCents": 32.082
+      },
+      {
+        "time": "2026-10-21T19:00:00Z",
+        "valueInCents": 29.926
+      },
+      {
+        "time": "2026-10-21T19:15:00Z",
+        "valueInCents": 28.673
+      },
+      {
+        "time": "2026-10-21T19:30:00Z",
+        "valueInCents": 29.858
+      },
+      {
+        "time": "2026-10-21T19:45:00Z",
+        "valueInCents": 28.128
+      },
+      {
+        "time": "2026-10-21T20:00:00Z",
+        "valueInCents": 26.662
+      },
+      {
+        "time": "2026-10-21T20:15:00Z",
+        "valueInCents": 26.168
+      },
+      {
+        "time": "2026-10-21T20:30:00Z",
+        "valueInCents": 25.975
+      },
+      {
+        "time": "2026-10-21T20:45:00Z",
+        "valueInCents": 26.9
+      },
+      {
+        "time": "2026-10-21T21:00:00Z",
+        "valueInCents": 26.987
+      },
+      {
+        "time": "2026-10-21T21:15:00Z",
+        "valueInCents": 25.791
+      },
+      {
+        "time": "2026-10-21T21:30:00Z",
+        "valueInCents": 24.616
+      },
+      {
+        "time": "2026-10-21T21:45:00Z",
+        "valueInCents": 25.054
+      }
+    ],
+    "averageInCents": 24.396,
+    "maxRange": {
+      "startTime": "2026-10-21T17:00:00Z",
+      "endTime": "2026-10-21T17:00:00Z",
+      "averagePrice": 37.79
+    },
+    "minRange": {
+      "startTime": "2026-10-21T02:45:00Z",
+      "endTime": "2026-10-21T02:45:00Z",
+      "averagePrice": 17.501
+    }
+  },
+  "tomorrow": {
+    "points": [
+      {
+        "time": "2026-10-21T22:00:00Z",
+        "valueInCents": 30.191
+      },
+      {
+        "time": "2026-10-21T22:15:00Z",
+        "valueInCents": 28.724
+      },
+      {
+        "time": "2026-10-21T22:30:00Z",
+        "valueInCents": 29.427
+      },
+      {
+        "time": "2026-10-21T22:45:00Z",
+        "valueInCents": 28.795
+      },
+      {
+        "time": "2026-10-21T23:00:00Z",
+        "valueInCents": 26.381
+      },
+      {
+        "time": "2026-10-21T23:15:00Z",
+        "valueInCents": 27.7
+      },
+      {
+        "time": "2026-10-21T23:30:00Z",
+        "valueInCents": 27.219
+      },
+      {
+        "time": "2026-10-21T23:45:00Z",
+        "valueInCents": 26.482
+      },
+      {
+        "time": "2026-10-22T00:00:00Z",
+        "valueInCents": 25.441
+      },
+      {
+        "time": "2026-10-22T00:15:00Z",
+        "valueInCents": 25.948
+      },
+      {
+        "time": "2026-10-22T00:30:00Z",
+        "valueInCents": 24.289
+      },
+      {
+        "time": "2026-10-22T00:45:00Z",
+        "valueInCents": 24.682
+      },
+      {
+        "time": "2026-10-22T01:00:00Z",
+        "valueInCents": 24.353
+      },
+      {
+        "time": "2026-10-22T01:15:00Z",
+        "valueInCents": 25.192
+      },
+      {
+        "time": "2026-10-22T01:30:00Z",
+        "valueInCents": 24.663
+      },
+      {
+        "time": "2026-10-22T01:45:00Z",
+        "valueInCents": 22.877
+      },
+      {
+        "time": "2026-10-22T02:00:00Z",
+        "valueInCents": 23.166
+      },
+      {
+        "time": "2026-10-22T02:15:00Z",
+        "valueInCents": 22.163
+      },
+      {
+        "time": "2026-10-22T02:30:00Z",
+        "valueInCents": 23.759
+      },
+      {
+        "time": "2026-10-22T02:45:00Z",
+        "valueInCents": 23.575
+      },
+      {
+        "time": "2026-10-22T03:00:00Z",
+        "valueInCents": 22.222
+      },
+      {
+        "time": "2026-10-22T03:15:00Z",
+        "valueInCents": 23.181
+      },
+      {
+        "time": "2026-10-22T03:30:00Z",
+        "valueInCents": 23.388
+      },
+      {
+        "time": "2026-10-22T03:45:00Z",
+        "valueInCents": 22.717
+      },
+      {
+        "time": "2026-10-22T04:00:00Z",
+        "valueInCents": 24.745
+      },
+      {
+        "time": "2026-10-22T04:15:00Z",
+        "valueInCents": 24.899
+      },
+      {
+        "time": "2026-10-22T04:30:00Z",
+        "valueInCents": 26.253
+      },
+      {
+        "time": "2026-10-22T04:45:00Z",
+        "valueInCents": 26.481
+      },
+      {
+        "time": "2026-10-22T05:00:00Z",
+        "valueInCents": 26.015
+      },
+      {
+        "time": "2026-10-22T05:15:00Z",
+        "valueInCents": 27.513
+      },
+      {
+        "time": "2026-10-22T05:30:00Z",
+        "valueInCents": 27.353
+      },
+      {
+        "time": "2026-10-22T05:45:00Z",
+        "valueInCents": 29.903
+      },
+      {
+        "time": "2026-10-22T06:00:00Z",
+        "valueInCents": 29.909
+      },
+      {
+        "time": "2026-10-22T06:15:00Z",
+        "valueInCents": 29.669
+      },
+      {
+        "time": "2026-10-22T06:30:00Z",
+        "valueInCents": 28.044
+      },
+      {
+        "time": "2026-10-22T06:45:00Z",
+        "valueInCents": 26.874
+      },
+      {
+        "time": "2026-10-22T07:00:00Z",
+        "valueInCents": 28.121
+      },
+      {
+        "time": "2026-10-22T07:15:00Z",
+        "valueInCents": 27.481
+      },
+      {
+        "time": "2026-10-22T07:30:00Z",
+        "valueInCents": 24.59
+      },
+      {
+        "time": "2026-10-22T07:45:00Z",
+        "valueInCents": 24.771
+      },
+      {
+        "time": "2026-10-22T08:00:00Z",
+        "valueInCents": 23.081
+      },
+      {
+        "time": "2026-10-22T08:15:00Z",
+        "valueInCents": 24.175
+      },
+      {
+        "time": "2026-10-22T08:30:00Z",
+        "valueInCents": 23.764
+      },
+      {
+        "time": "2026-10-22T08:45:00Z",
+        "valueInCents": 21.956
+      },
+      {
+        "time": "2026-10-22T09:00:00Z",
+        "valueInCents": 22.647
+      },
+      {
+        "time": "2026-10-22T09:15:00Z",
+        "valueInCents": 22.805
+      },
+      {
+        "time": "2026-10-22T09:30:00Z",
+        "valueInCents": 22.205
+      },
+      {
+        "time": "2026-10-22T09:45:00Z",
+        "valueInCents": 23.828
+      },
+      {
+        "time": "2026-10-22T10:00:00Z",
+        "valueInCents": 22.98
+      },
+      {
+        "time": "2026-10-22T10:15:00Z",
+        "valueInCents": 22.753
+      },
+      {
+        "time": "2026-10-22T10:30:00Z",
+        "valueInCents": 23.855
+      },
+      {
+        "time": "2026-10-22T10:45:00Z",
+        "valueInCents": 24.655
+      },
+      {
+        "time": "2026-10-22T11:00:00Z",
+        "valueInCents": 23.747
+      },
+      {
+        "time": "2026-10-22T11:15:00Z",
+        "valueInCents": 24.387
+      },
+      {
+        "time": "2026-10-22T11:30:00Z",
+        "valueInCents": 26.41
+      },
+      {
+        "time": "2026-10-22T11:45:00Z",
+        "valueInCents": 25.971
+      },
+      {
+        "time": "2026-10-22T12:00:00Z",
+        "valueInCents": 25.855
+      },
+      {
+        "time": "2026-10-22T12:15:00Z",
+        "valueInCents": 26.44
+      },
+      {
+        "time": "2026-10-22T12:30:00Z",
+        "valueInCents": 25.884
+      },
+      {
+        "time": "2026-10-22T12:45:00Z",
+        "valueInCents": 26.532
+      },
+      {
+        "time": "2026-10-22T13:00:00Z",
+        "valueInCents": 27.208
+      },
+      {
+        "time": "2026-10-22T13:15:00Z",
+        "valueInCents": 28.223
+      },
+      {
+        "time": "2026-10-22T13:30:00Z",
+        "valueInCents": 27.8
+      },
+      {
+        "time": "2026-10-22T13:45:00Z",
+        "valueInCents": 28.248
+      },
+      {
+        "time": "2026-10-22T14:00:00Z",
+        "valueInCents": 28.418
+      },
+      {
+        "time": "2026-10-22T14:15:00Z",
+        "valueInCents": 30.372
+      },
+      {
+        "time": "2026-10-22T14:30:00Z",
+        "valueInCents": 30.123
+      },
+      {
+        "time": "2026-10-22T14:45:00Z",
+        "valueInCents": 32.594
+      },
+      {
+        "time": "2026-10-22T15:00:00Z",
+        "valueInCents": 33.478
+      },
+      {
+        "time": "2026-10-22T15:15:00Z",
+        "valueInCents": 32.724
+      },
+      {
+        "time": "2026-10-22T15:30:00Z",
+        "valueInCents": 34.383
+      },
+      {
+        "time": "2026-10-22T15:45:00Z",
+        "valueInCents": 36.741
+      },
+      {
+        "time": "2026-10-22T16:00:00Z",
+        "valueInCents": 36.959
+      },
+      {
+        "time": "2026-10-22T16:15:00Z",
+        "valueInCents": 37.96
+      },
+      {
+        "time": "2026-10-22T16:30:00Z",
+        "valueInCents": 40.869
+      },
+      {
+        "time": "2026-10-22T16:45:00Z",
+        "valueInCents": 40.667
+      },
+      {
+        "time": "2026-10-22T17:00:00Z",
+        "valueInCents": 40.73
+      },
+      {
+        "time": "2026-10-22T17:15:00Z",
+        "valueInCents": 41.382
+      },
+      {
+        "time": "2026-10-22T17:30:00Z",
+        "valueInCents": 40.967
+      },
+      {
+        "time": "2026-10-22T17:45:00Z",
+        "valueInCents": 38.705
+      },
+      {
+        "time": "2026-10-22T18:00:00Z",
+        "valueInCents": 37.481
+      },
+      {
+        "time": "2026-10-22T18:15:00Z",
+        "valueInCents": 37.168
+      },
+      {
+        "time": "2026-10-22T18:30:00Z",
+        "valueInCents": 36.017
+      },
+      {
+        "time": "2026-10-22T18:45:00Z",
+        "valueInCents": 35.048
+      },
+      {
+        "time": "2026-10-22T19:00:00Z",
+        "valueInCents": 34.718
+      },
+      {
+        "time": "2026-10-22T19:15:00Z",
+        "valueInCents": 33.762
+      },
+      {
+        "time": "2026-10-22T19:30:00Z",
+        "valueInCents": 33.826
+      },
+      {
+        "time": "2026-10-22T19:45:00Z",
+        "valueInCents": 31.141
+      },
+      {
+        "time": "2026-10-22T20:00:00Z",
+        "valueInCents": 31.411
+      },
+      {
+        "time": "2026-10-22T20:15:00Z",
+        "valueInCents": 30.869
+      },
+      {
+        "time": "2026-10-22T20:30:00Z",
+        "valueInCents": 31.78
+      },
+      {
+        "time": "2026-10-22T20:45:00Z",
+        "valueInCents": 29.991
+      },
+      {
+        "time": "2026-10-22T21:00:00Z",
+        "valueInCents": 29.543
+      },
+      {
+        "time": "2026-10-22T21:15:00Z",
+        "valueInCents": 29.855
+      },
+      {
+        "time": "2026-10-22T21:30:00Z",
+        "valueInCents": 29.476
+      },
+      {
+        "time": "2026-10-22T21:45:00Z",
+        "valueInCents": 28.807
+      }
+    ],
+    "averageInCents": 28.464,
+    "maxRange": {
+      "startTime": "2026-10-22T17:15:00Z",
+      "endTime": "2026-10-22T17:15:00Z",
+      "averagePrice": 41.382
+    },
+    "minRange": {
+      "startTime": "2026-10-22T08:45:00Z",
+      "endTime": "2026-10-22T08:45:00Z",
+      "averagePrice": 21.956
+    }
+  }
+}

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LichtBlick Dynamic – Strompreise</title>
+<style>
+  :root {
+    --bg: #0e1420; --card: #182234; --card2: #1f2c44;
+    --text: #eaf0fa; --muted: #93a1b8; --accent: #29c76f;
+    --cheap: #2fd07a; --exp: #ff5d5d; --grid: #2b3a57;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--text); min-height: 100vh;
+  }
+  header { padding: 20px clamp(16px, 4vw, 40px) 0; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  header h1 { font-size: clamp(20px, 3vw, 26px); margin: 0; }
+  header .sub { color: var(--muted); font-size: 13px; }
+  header .spacer { flex: 1; }
+  main { padding: 16px clamp(16px, 4vw, 40px) 40px; max-width: 1000px; margin: 0 auto; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 12px 0 20px; }
+  .kpi { background: var(--card); border-radius: 14px; padding: 14px 16px; }
+  .kpi .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+  .kpi .value { font-size: 24px; font-weight: 700; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .kpi .unit { font-size: 12px; color: var(--muted); margin-left: 4px; font-weight: 400; }
+  .kpi .value.cheap { color: var(--cheap); } .kpi .value.exp { color: var(--exp); }
+  .card { background: var(--card); border-radius: 16px; padding: 18px; margin-bottom: 18px; }
+  .card h2 { margin: 0 0 2px; font-size: 17px; }
+  .card .meta { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
+  svg { width: 100%; height: auto; display: block; }
+  .bar:hover { filter: brightness(1.2); }
+  .legend { display: flex; gap: 16px; color: var(--muted); font-size: 12px; margin-top: 8px; flex-wrap: wrap; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+  .empty, .error { color: var(--muted); padding: 28px 0; text-align: center; font-size: 15px; line-height: 1.6; }
+  .error { color: #ffb0b0; }
+  footer { color: var(--muted); font-size: 12px; text-align: center; padding: 0 16px 28px; line-height: 1.6; }
+  #login .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  #login input {
+    flex: 1 1 220px; padding: 11px 14px; border-radius: 10px; border: 1px solid var(--grid);
+    background: var(--card2); color: var(--text); font-size: 15px;
+  }
+  #login input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  #login button {
+    padding: 11px 22px; border: 0; border-radius: 10px; background: var(--accent);
+    color: #06210f; font-weight: 700; font-size: 15px; cursor: pointer;
+  }
+  #login button:disabled { opacity: .5; cursor: wait; }
+  #login .hint { color: var(--muted); font-size: 13px; margin-top: 10px; line-height: 1.5; }
+  #login a { color: var(--muted); }
+  .logout { background: none; border: 1px solid var(--grid); color: var(--muted); border-radius: 8px; padding: 4px 10px; cursor: pointer; font-size: 12px; }
+  #tooltip {
+    position: fixed; pointer-events: none; background: #000c; border: 1px solid var(--grid);
+    padding: 6px 10px; border-radius: 8px; font-size: 13px; opacity: 0; transition: opacity .1s;
+    white-space: nowrap; z-index: 10;
+  }
+  .contract { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px 16px; margin: 0; }
+  .contract dt { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+  .contract dd { margin: 2px 0 0; font-size: 15px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .tabs { display: flex; gap: 6px; margin: 4px 0 4px; }
+  .tabs button {
+    background: none; border: 1px solid var(--grid); color: var(--muted); border-radius: 999px;
+    padding: 6px 16px; font-size: 14px; cursor: pointer;
+  }
+  .tabs button[aria-selected="true"] { background: var(--card2); color: var(--text); border-color: var(--accent); }
+  details summary { cursor: pointer; color: var(--muted); font-size: 14px; }
+  pre#raw-json {
+    background: var(--card2); border-radius: 10px; padding: 12px; margin: 12px 0 0; max-height: 420px;
+    overflow: auto; font-size: 12px; line-height: 1.45; white-space: pre;
+  }
+  .banner { background: #3a1f24; color: #ffb0b0; border-radius: 12px; padding: 10px 14px; margin-bottom: 14px; font-size: 14px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <h1>⚡ LichtBlick Dynamic</h1>
+  <span class="sub" id="contract-line"></span>
+  <span class="spacer"></span>
+  <button class="logout hidden" id="btn-logout" title="Abmelden und Zugangsdaten löschen">abmelden</button>
+</header>
+<main>
+  <div class="card" id="login">
+    <h2>Login</h2>
+    <div class="meta">Zugangsdaten deiner LichtBlick-App – nichts wird an Dritte gesendet, außer dem LichtBlick-API selbst.</div>
+    <form id="login-form" autocomplete="on">
+      <div class="row">
+        <input id="email" type="email" placeholder="E-Mail" autocomplete="username" required>
+        <input id="password" type="password" placeholder="Passwort" autocomplete="current-password" required>
+        <button id="btn-login" type="submit">Preise laden</button>
+      </div>
+      <div class="hint">Nach erfolgreichem Login werden die Zugangsdaten nur lokal in deinem Browser
+      gespeichert (localStorage, im Klartext) und die Preise alle 15&nbsp;Minuten neu geladen.
+      <a href="?logout=1" id="logout-link">Gespeicherte Daten löschen</a></div>
+    </form>
+    <div id="login-error" class="error hidden"></div>
+  </div>
+
+  <div id="dash" class="hidden">
+    <nav class="tabs" role="tablist" aria-label="Ansicht">
+      <button type="button" role="tab" data-tab="preise" aria-selected="true">Preise</button>
+      <button type="button" role="tab" data-tab="vertrag" aria-selected="false">Vertrag</button>
+    </nav>
+    <div id="refresh-error" class="banner hidden"></div>
+    <section id="view-preise">
+      <div class="kpis" id="kpis"></div>
+      <div id="notice"></div>
+      <div class="card"><h2>Heute</h2><div class="meta" id="meta-today"></div><div id="chart-today"></div></div>
+      <div class="card"><h2>Morgen</h2><div class="meta" id="meta-tomorrow"></div><div id="chart-tomorrow"></div></div>
+    </section>
+    <section id="view-vertrag" class="hidden">
+      <div class="card"><h2>Vertrag</h2><div class="meta">Stand laut LichtBlick-App-API</div><dl class="contract" id="contract"></dl></div>
+      <div class="card"><h2>Konditionen &amp; Zahlung</h2>
+        <div class="meta">„App-Wert“: Feld so, wie die App es liefert – Einheit und brutto/netto noch nicht mit echten Daten bestätigt.</div>
+        <dl class="contract" id="contract-terms"></dl></div>
+      <div class="card"><details><summary>Rohdaten – komplette Antwort von <code>/api/prices</code></summary>
+        <pre id="raw-json"></pre></details></div>
+    </section>
+  </div>
+</main>
+<footer>
+  Datenquelle: offizielle LichtBlick-App-API (<code>graph.lichtblick.de</code>) · Preise in ct/kWh,
+  15-Minutentakt · Stand: <span id="fetched-at">–</span> · Alle Angaben ohne Gewähr.
+</footer>
+<div id="tooltip"></div>
+<script>
+"use strict";
+/*
+ * Läuft über den mitgelieferten serve.py, weil das LichtBlick-GraphQL-API
+ * CORS-Anfragen von fremden Origins blockt. Diese Seite schickt daher nur
+ * einen POST /api/prices an denselben Ursprung – der Proxy reicht weiter.
+ * Alle Zeiten werden in Berliner Zeit angezeigt, egal wo der Browser steht.
+ * Demo ohne Login:  ?demo=1
+ */
+const DEMO = new URLSearchParams(location.search).has("demo");
+const LS_KEY = "lichtblick-preise/creds";
+const TZ = "Europe/Berlin";
+const REFRESH_MS = 15 * 60 * 1000;
+
+const fmt = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmtTime = new Intl.DateTimeFormat("de-DE", { timeZone: TZ, hour: "2-digit", minute: "2-digit" });
+const fmtDateTime = new Intl.DateTimeFormat("de-DE", { timeZone: TZ, dateStyle: "short", timeStyle: "short" });
+const fmtDate = new Intl.DateTimeFormat("de-DE", { timeZone: "UTC", weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" });
+const fmtShortDate = new Intl.DateTimeFormat("de-DE", { timeZone: "UTC", day: "2-digit", month: "2-digit", year: "numeric" });
+const fmtParts = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+/** Datum/Uhrzeit-Teile in Berliner Zeit als Zahlen. */
+function berlinParts(date) {
+  const o = {};
+  for (const p of fmtParts.formatToParts(date)) if (p.type !== "literal") o[p.type] = +p.value;
+  return o;
+}
+
+/** "Mittwoch, 21.10.2026" für heute (+offset Tage) in Berliner Zeit. */
+function dayLabel(offset) {
+  const b = berlinParts(new Date());
+  return fmtDate.format(new Date(Date.UTC(b.year, b.month - 1, b.day + offset, 12)));
+}
+
+function colorFor(v, min, max) {
+  if (max === min) return "var(--cheap)";
+  const t = (v - min) / (max - min);
+  const lo = [47, 208, 122], hi = [255, 93, 93];
+  const c = lo.map((l, i) => Math.round(l + (hi[i] - l) * t));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+
+function renderChart(el, points) {
+  if (!points || points.length === 0) {
+    el.innerHTML = '<div class="empty">Noch keine Preisdaten veröffentlicht.<br>' +
+      '(Die Preise des Folgetags erscheinen meist am Nachmittag.)</div>';
+    return;
+  }
+  const vals = points.map(p => p.valueInCents);
+  const min = Math.min(...vals), max = Math.max(...vals);
+  const W = 900, H = 240, PAD_B = 26, PAD_T = 8;
+  const n = points.length, bw = W / n;
+  const lo = Math.min(min, 0), hi = Math.max(max, 0.001);
+  const y = v => PAD_T + (H - PAD_B - PAD_T) * (1 - (v - lo) / (hi - lo));
+  let grid = "", gridLabels = "", bars = "", ticks = "";
+  for (const gv of [lo + (hi - lo) * 0.15, (lo + hi) / 2, hi - (hi - lo) * 0.15]) {
+    const yy = y(gv).toFixed(1);
+    grid += `<line x1="0" x2="${W}" y1="${yy}" y2="${yy}" stroke="var(--grid)" stroke-dasharray="3 4"/>`;
+    // Beschriftung nach den Balken zeichnen (sonst verdeckt), mit Kontur zur Lesbarkeit
+    gridLabels += `<text x="4" y="${+yy - 4}" fill="var(--muted)" font-size="11" stroke="var(--card)" ` +
+                  `stroke-width="3" paint-order="stroke">${fmt.format(gv)} ct</text>`;
+  }
+  points.forEach((p, i) => {
+    const v = p.valueInCents, x = i * bw, t = new Date(p.time);
+    const yBase = y(0), top = Math.min(y(v), yBase), hgt = Math.max(Math.abs(yBase - y(v)), 1);
+    bars += `<rect class="bar" x="${(x + 0.5).toFixed(2)}" y="${top.toFixed(2)}" ` +
+            `width="${Math.max(bw - 1, 1).toFixed(2)}" height="${hgt.toFixed(2)}" rx="1.5" ` +
+            `fill="${colorFor(v, min, max)}" data-t="${esc(fmtDateTime.format(t) + " Uhr: " + fmt.format(v) + " ct/kWh")}"/>`;
+    // Achse: volle Stunden, alle 3 h (Berliner Zeit) – stimmt auch an Tagen mit 23/25 h
+    const b = berlinParts(t);
+    if (b.minute === 0 && b.hour % 3 === 0) {
+      ticks += `<text class="tick" x="${(x + 1).toFixed(1)}" y="${H - 8}" fill="var(--muted)" font-size="11">${String(b.hour).padStart(2, "0")}</text>`;
+    }
+  });
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Preisverlauf">${grid}${bars}${gridLabels}${ticks}</svg>` +
+    `<div class="legend"><span><span class="dot" style="background:var(--cheap)"></span>günstigster Slot: ${fmt.format(min)} ct</span>` +
+    `<span><span class="dot" style="background:var(--exp)"></span>teuerster Slot: ${fmt.format(max)} ct</span>` +
+    `<span>Spreizung: ${fmt.format(max - min)} ct</span></div>`;
+}
+
+// Tooltip für die Balken (ein Handler für alle Charts)
+const tooltip = document.getElementById("tooltip");
+document.addEventListener("mousemove", ev => {
+  const bar = ev.target instanceof Element && ev.target.closest("rect.bar");
+  if (!bar) { tooltip.style.opacity = "0"; return; }
+  tooltip.textContent = bar.dataset.t;
+  const pad = 14, w = tooltip.offsetWidth;
+  const left = ev.clientX + pad + w > window.innerWidth ? ev.clientX - pad - w : ev.clientX + pad;
+  tooltip.style.left = `${Math.max(4, left)}px`;
+  tooltip.style.top = `${ev.clientY + pad}px`;
+  tooltip.style.opacity = "1";
+});
+
+function bestWorst(points) {
+  if (!points || !points.length) return null;
+  let lo = points[0], hi = points[0];
+  for (const p of points) { if (p.valueInCents < lo.valueInCents) lo = p; if (p.valueInCents > hi.valueInCents) hi = p; }
+  return { lo, hi };
+}
+
+function average(day) {
+  if (day.averageInCents != null) return day.averageInCents;
+  return day.points.reduce((s, p) => s + p.valueInCents, 0) / day.points.length;
+}
+
+function renderKpis(d) {
+  const el = document.getElementById("kpis");
+  const items = [];
+  if (d.currentPrice != null)
+    items.push({ label: "Aktueller Preis", value: fmt.format(d.currentPrice), unit: "ct/kWh", cls: "" });
+  for (const [key, prae] of [["today", "Heute"], ["tomorrow", "Morgen"]]) {
+    const day = d[key];
+    if (day && day.points && day.points.length) {
+      items.push({ label: `${prae} Ø`, value: fmt.format(average(day)), unit: "ct/kWh", cls: "" });
+      const bw = bestWorst(day.points);
+      items.push({ label: `${prae} günstigstes Zeitfenster`,
+                   value: fmtTime.format(new Date(bw.lo.time)), unit: `(${fmt.format(bw.lo.valueInCents)} ct)`, cls: "cheap" });
+      items.push({ label: `${prae} teuerstes Zeitfenster`,
+                   value: fmtTime.format(new Date(bw.hi.time)), unit: `(${fmt.format(bw.hi.valueInCents)} ct)`, cls: "exp" });
+    }
+  }
+  el.innerHTML = items.map(i =>
+    `<div class="kpi"><div class="label">${esc(i.label)}</div>` +
+    `<div class="value ${i.cls}">${esc(i.value)}<span class="unit">${esc(i.unit)}</span></div></div>`).join("");
+}
+
+/** "2026-11-01" -> "01.11.2026" (ohne Zeitzonen-Verschiebung). */
+function isoDate(s) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || "");
+  return m ? fmtShortDate.format(new Date(Date.UTC(+m[1], m[2] - 1, +m[3], 12))) : null;
+}
+
+const STATUS = { WAITING: "in Vorbereitung", ACTIVE: "aktiv", TERMINATED: "gekündigt", CANCELLED: "storniert", INACTIVE: "inaktiv" };
+const STATUS_REASON = { ACTIVATING: "Belieferung wird eingerichtet" };
+const UNITS = { DAYS: ["Tag", "Tage"], WEEKS: ["Woche", "Wochen"], MONTHS: ["Monat", "Monate"], YEARS: ["Jahr", "Jahre"] };
+const PAYMENT = { DIRECT_DEBIT: "Lastschrift", BANK_TRANSFER: "Überweisung" };
+const fmtEur = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" });
+
+function period(p, zeroText) {
+  if (!p || p.value == null) return null;
+  if (p.value === 0 && zeroText) return zeroText;
+  const u = UNITS[p.unit];
+  return u ? `${p.value} ${p.value === 1 ? u[0] : u[1]}` : `${p.value} ${p.unit ?? ""}`.trim();
+}
+const num = v => (typeof v === "number" ? fmt.format(v) : null);
+const eur = v => (typeof v === "number" ? fmtEur.format(v) : null);
+
+function dl(rows) {
+  // alle Felder zeigen – fehlende Werte als "–", damit sichtbar ist, was die API (noch) nicht liefert
+  return rows.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v == null || v === "" ? "–" : v)}</dd></div>`).join("");
+}
+
+function renderContract(d) {
+  const c = d.contract || {}, x = c.details || {};
+  document.getElementById("contract").innerHTML = dl([
+    ["Produkt", c.name],
+    ["Vertragsnummer", c.id],
+    ["Status", x.status ? [STATUS[x.status] ?? x.status, STATUS_REASON[x.statusReason] ?? x.statusReason].filter(Boolean).join(" · ") : null],
+    ["Lieferstelle", c.address ? [c.address.postCode, c.address.city].filter(Boolean).join(" ") : null],
+    ["Vertragsabschluss", isoDate(x.createdAt)],
+    ["Produkt aktiv seit", isoDate(x.productActiveFrom)],
+    ["Lieferbeginn", isoDate(c.startDate ?? x.startDate)],
+    ["Lieferende", isoDate(x.endDate)],
+    ["Gekündigt zum", isoDate(x.terminationDate)],
+    ["Widerrufen am", isoDate(x.revocationDate)],
+  ]);
+  document.getElementById("contract-terms").innerHTML = dl([
+    ["Mindestlaufzeit", period(x.minimumRuntime, "keine")],
+    ["Kündigungsfrist", period(x.terminationPeriod)],
+    ["Preisgarantie", x.fixedPriceMonths ? `${x.fixedPriceMonths} Monate` : (x.fixedPriceMonths === 0 ? "keine" : null)],
+    ["Arbeitspreis (App-Wert)", num(x.workingPrice)],
+    ["Arbeitspreis NT (App-Wert)", num(x.workingPriceNt)],
+    ["Grundpreis/Jahr (App-Wert)", num(x.yearlyBasePrice)],
+    ["Zählernummer", x.meterNumber],
+    ["Abschlag", x.deposit ? [eur(x.deposit.grossAmount), x.deposit.firstDueDate && `ab ${isoDate(x.deposit.firstDueDate)}`].filter(Boolean).join(" ") : null],
+    ["Nächste Abschlagszahlung", x.nextDeposit ? [eur(x.nextDeposit.grossAmount), x.nextDeposit.dueDate && `am ${isoDate(x.nextDeposit.dueDate)}`].filter(Boolean).join(" ") : null],
+    ["Zahlungsart", PAYMENT[x.paymentMethod] ?? x.paymentMethod],
+  ]);
+  document.getElementById("raw-json").textContent = JSON.stringify(d, null, 2);
+}
+
+/** Reiter Preise/Vertrag; Auswahl steht im URL-Hash (#vertrag), damit Reload sie behält. */
+function showTab(name) {
+  const tab = name === "vertrag" ? "vertrag" : "preise";
+  for (const b of document.querySelectorAll(".tabs button"))
+    b.setAttribute("aria-selected", String(b.dataset.tab === tab));
+  document.getElementById("view-preise").classList.toggle("hidden", tab !== "preise");
+  document.getElementById("view-vertrag").classList.toggle("hidden", tab !== "vertrag");
+}
+for (const b of document.querySelectorAll(".tabs button"))
+  b.addEventListener("click", () => { history.replaceState(null, "", "#" + b.dataset.tab); showTab(b.dataset.tab); });
+showTab(location.hash.slice(1));
+
+function render(d) {
+  document.getElementById("dash").classList.remove("hidden");
+  document.getElementById("refresh-error").classList.add("hidden");
+  document.getElementById("contract-line").textContent =
+    d.contract?.name ? `${d.contract.name} · Vertrag ${d.contract.id}` : "";
+  document.getElementById("fetched-at").textContent =
+    d.fetchedAt ? fmtDateTime.format(new Date(d.fetchedAt)) : "–";
+  document.getElementById("meta-today").textContent = dayLabel(0);
+  document.getElementById("meta-tomorrow").textContent = dayLabel(1);
+  renderKpis(d);
+  renderChart(document.getElementById("chart-today"), d.today?.points);
+  renderChart(document.getElementById("chart-tomorrow"), d.tomorrow?.points);
+  renderContract(d);
+  if ((!d.today?.points?.length) && (!d.tomorrow?.points?.length)) {
+    const start = isoDate(d.contract?.startDate);
+    const lead = start ? `Dein Vertrag beginnt am ${esc(start)}; die API liefert ab dem ersten Liefertag Daten.`
+                       : "Startet dein Vertrag erst in den nächsten Tagen, liefert die API ab dem ersten Liefertag Daten.";
+    document.getElementById("notice").innerHTML =
+      `<div class="card"><div class="empty">Noch keine Stundenpreise verfügbar.<br>${lead}<br>` +
+      `Die Preise des Folgetags kommen jeweils nachmittags.</div></div>`;
+  } else {
+    document.getElementById("notice").innerHTML = "";
+  }
+}
+
+function showLoginError(msg) {
+  const el = document.getElementById("login-error");
+  el.textContent = msg;
+  el.classList.remove("hidden");
+  document.getElementById("login").classList.remove("hidden");
+  document.getElementById("btn-login").disabled = false;
+}
+
+async function fetchPrices(creds) {
+  let r;
+  try {
+    r = await fetch("api/prices", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(creds),
+    });
+  } catch {
+    throw new Error("Lokaler Server nicht erreichbar – läuft serve.py?");
+  }
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
+  return data;
+}
+
+let currentCreds = null, refreshTimer = null, hasData = false;
+
+async function load(creds, { remember = false } = {}) {
+  try {
+    const data = await fetchPrices(creds);
+    currentCreds = creds;
+    hasData = true;
+    // Zugangsdaten erst nach erfolgreichem Login speichern
+    if (remember) localStorage.setItem(LS_KEY, JSON.stringify(creds));
+    render(data);
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("login-error").classList.add("hidden");
+    document.getElementById("btn-login").disabled = false;
+    document.getElementById("btn-logout").classList.remove("hidden");
+    if (!refreshTimer) refreshTimer = setInterval(() => currentCreds && refresh(), REFRESH_MS);
+  } catch (e) {
+    showLoginError(e.message);
+    if (!hasData) document.getElementById("dash").classList.add("hidden");
+  }
+}
+
+/** Hintergrund-Aktualisierung: bei Fehlern alte Daten stehen lassen. */
+async function refresh() {
+  try {
+    render(await fetchPrices(currentCreds));
+  } catch (e) {
+    const el = document.getElementById("refresh-error");
+    el.textContent = `Aktualisierung fehlgeschlagen (${e.message}) – angezeigt werden die zuletzt geladenen Preise.`;
+    el.classList.remove("hidden");
+  }
+}
+
+function storedCreds() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || "null"); }
+  catch { return null; }
+}
+
+document.getElementById("login-form").addEventListener("submit", (ev) => {
+  ev.preventDefault();
+  const c = {
+    email: document.getElementById("email").value.trim(),
+    password: document.getElementById("password").value,
+  };
+  if (!c.email || !c.password) return;
+  document.getElementById("btn-login").disabled = true;
+  document.getElementById("login-error").classList.add("hidden");
+  load(c, { remember: true });
+});
+
+document.getElementById("btn-logout").addEventListener("click", () => {
+  localStorage.removeItem(LS_KEY);
+  location.href = location.pathname;
+});
+
+if (new URLSearchParams(location.search).has("logout")) {
+  localStorage.removeItem(LS_KEY);
+  location.replace(location.pathname);
+} else if (DEMO) {
+  document.getElementById("login").classList.add("hidden");
+  fetch("data/prices_demo.json", { cache: "no-store" })
+    .then(r => r.json())
+    .then(render)
+    .catch(e => showLoginError("Demo-Daten nicht ladbar: " + e.message));
+} else {
+  const c = storedCreds();
+  if (c && c.email && c.password) {
+    document.getElementById("email").value = c.email;
+    document.getElementById("login").classList.add("hidden");
+    load(c);
+  }
+}
+</script>
+</body>
+</html>

@@ -118,6 +118,34 @@ Noch nicht mit echten Preisdaten bestätigt (Stand: vor dem ersten Liefertag):
 Ein Browser auf `file://` oder einem anderen Origin kommt nicht direkt dran.
 `serve.py` reicht die Anfrage als gleichorigiger Proxy weiter.
 
+## Verwandte Projekte und Alternativen
+
+Stand 21.10.2026 ist kein anderes Open-Source-Projekt bekannt, das die
+LichtBlick-Kundenpreise abholt. Geprüft wurden GitHub, die HACS-Standardliste,
+die Tarif-Vorlagen von [evcc](https://github.com/evcc-io/evcc/tree/master/templates/definition/tariff)
+und das Home-Assistant-Forum. Hinweise auf weitere Projekte gern als Issue.
+
+- **SMA Sunny Home Manager 2.0 / Sunny Portal**: Laut
+  [SMA-Handbuch](https://manuals.sma.de/SPortal/en-US/16129800843.html) zeigt das
+  Portal Tarife des Partners LichtBlick SE an. Das ist der offizielle Weg für
+  SMA-Anlagen.
+- **[evcc](https://docs.evcc.io/en/features/dynamic-prices)**: Es gibt keine
+  LichtBlick-Vorlage, aber eingebaute Anbieter wie Tibber, Ostrom, Octopus und
+  lekker. Für LichtBlick lässt sich der Börsenpreis
+  ([`energy-charts-api`](https://docs.evcc.io/de/tariffs/energy-charts-market-price),
+  `entsoe`) mit eigenem Aufschlag nutzen. Er bildet aber nicht die echten
+  LichtBlick-Preise ab.
+- **Home Assistant, Börsenpreis statt Kundenpreis**:
+  [mampfes/ha_epex_spot](https://github.com/mampfes/ha_epex_spot) (EPEX Spot,
+  mit konfigurierbarem Aufschlag) und
+  [custom-components/nordpool](https://github.com/custom-components/nordpool).
+- **Vorbild bei einem anderen Anbieter**: Integrationen für Ostrom, z. B.
+  [melmager/ha_ostrom](https://github.com/melmager/ha_ostrom).
+
+Der Unterschied zu den Börsenpreis-Lösungen: Dieses Projekt holt die Preise, die
+LichtBlick für den eigenen Vertrag ausweist, statt sie aus dem Börsenpreis
+nachzurechnen.
+
 ## Sicherheit
 
 - `serve.py` lauscht standardmäßig nur auf `127.0.0.1` und liefert nur

@@ -156,13 +156,12 @@ Browser abgefangen.
 
 ## Lizenz
 
-[Apache License 2.0](LICENSE) © 2026 chloepriceless.
+[MIT](LICENSE) © 2026 chloepriceless.
 
 Du darfst das Projekt frei nutzen, ändern und weitergeben, auch kommerziell und
-eingebaut in andere Projekte. Bedingung ist die Namensnennung: Bei jeder
-Weitergabe, auch in veränderter Form, müssen der Copyright-Hinweis, der
-Lizenztext und die Datei [`NOTICE`](NOTICE) mitgeliefert werden. Änderungen an
-Dateien müssen als solche gekennzeichnet sein.
+eingebaut in andere Projekte. Bedingung: Der Copyright-Hinweis und der
+Lizenztext bleiben in allen Kopien und wesentlichen Teilen erhalten. Über einen
+Link zurück zu diesem Repo freue ich mich.
 
 Inoffizielles Projekt, nicht verbunden mit LichtBlick SE. „LichtBlick“ und
 „ÖkoStrom Dynamic“ werden nur zur Beschreibung der Kompatibilität genannt.
